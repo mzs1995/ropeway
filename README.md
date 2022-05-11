@@ -55,7 +55,7 @@ python verify_on_normal_model.py
 - The adversarially trained models can be found [here](https://github.com/tensorflow/models/tree/archive/research/adv_imagenet_models).
 
 ### About the `/storage/label`
-- This directory is uesed to store the labels of benign images and the labels of their adversarial examples.
+- This directory is uesed to store the labels of benign images on different models.
 - Ideally, the 1000 images tested are correctly classified by all models. But in our experiments, this was not the case. For example, there are 939 images can be classified correctly by ResNet-152 and 989 images for Inception-v3. So, we provide images with names and labels that can be classified correctly.
 
 ## Acknowledgements
