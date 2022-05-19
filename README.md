@@ -9,7 +9,6 @@ Authors...
 
 - Python 3.9.7
 - [PyTorch 1.10.0](https://pytorch.org/get-started/previous-versions/)
-- Numpy 1.21.2
 - Scipy 1.6.2
 - [Pretrainedmodels 0.7.4](https://github.com/Cadene/pretrained-models.pytorch)
 
