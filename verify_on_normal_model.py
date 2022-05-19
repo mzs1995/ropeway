@@ -48,7 +48,7 @@ def verify(source_model, batchsize):
         dataloader = DataLoader(dataset, batchsize)
 
         count = 0
-        count_sceucess = 0
+        count_success = 0
 
         for img, tag, name in dataloader:
             count = count + len(tag)
@@ -58,7 +58,7 @@ def verify(source_model, batchsize):
 
             with torch.no_grad():
                 pred = target_model(img).argmax(1)
-            count_sceucess = count_sceucess + sum(tag != pred).item()
+            count_sceucess = count_success + sum(tag != pred).item()
             print("\r", "[Source model:[{}] || Target model:[{}] || No.{}, Success:{}, SR:{}"
                   .format(source_model, target_model_name, count, count_sceucess, round(count_sceucess / count, 4)),
                   end="",
