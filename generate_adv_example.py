@@ -12,10 +12,10 @@ from attack.dim import dim
 from attack.sim import sim
 from attack.tim import tim
 from attack.di_admix import di_admix
-from attack.re_dim import re_dim
-from attack.re_sim import re_sim
-from attack.re_tim import re_tim
-from attack.re_di_admix import re_di_admix
+from attack.r_dim import r_dim
+from attack.r_sim import r_sim
+from attack.r_tim import r_tim
+from attack.r_di_admix import r_di_admix
 
 
 def gkern(kernlen=21, nsig=3):
@@ -61,20 +61,20 @@ def generate(attack, batchsize, storage_adv_dir, img_dir, label_path):
         # attack
         if attack == "DIM":
             img_adv, N = dim(source_model, img, tag)
-        elif attack == "Re-DIM":
-            img_adv, N = re_dim(source_model, img, tag)
+        elif attack == "R-DIM":
+            img_adv, N = r_dim(source_model, img, tag)
         elif attack == "SIM":
             img_adv, N = sim(source_model, img, tag)
-        elif attack == "Re-SIM":
-            img_adv, N = re_sim(source_model, img, tag)
+        elif attack == "R-SIM":
+            img_adv, N = r_sim(source_model, img, tag)
         elif attack == "TIM":
             img_adv, N = tim(source_model, img, tag, translated_kernel)
-        elif attack == "Re-TIM":
-            img_adv, N = re_tim(source_model, img, tag, translated_kernel)
+        elif attack == "R-TIM":
+            img_adv, N = r_tim(source_model, img, tag, translated_kernel)
         elif attack == "DI-Admix":
             img_adv, N = di_admix(source_model, img, tag, transform, img_dir, label_path)
-        elif attack == "Re-DI-Admix":
-            img_adv, N = re_di_admix(source_model, img, tag, transform, img_dir, label_path)
+        elif attack == "R-DI-Admix":
+            img_adv, N = r_di_admix(source_model, img, tag, transform, img_dir, label_path)
         else:
             print("Attack name is wrong.")
             break
@@ -91,13 +91,13 @@ def generate(attack, batchsize, storage_adv_dir, img_dir, label_path):
 
 if __name__ == "__main__":
     # attack = "DIM"
-    attack = "Re-DIM"
+    attack = "R-DIM"
     # attack = "SIM"
-    # attack = "Re-SIM"
+    # attack = "R-SIM"
     # attack = "TIM"
-    # attack = "Re-TIM"
+    # attack = "R-TIM"
     # attack = "DI-Admix"
-    # attack = "Re-DI-Admix"
+    # attack = "R-DI-Admix"
     batchsize = 50
     storage_adv_dir = "storage/adv"
     img_dir = "storage/imgs"
