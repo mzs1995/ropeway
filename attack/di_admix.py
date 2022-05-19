@@ -40,17 +40,26 @@ def load_img_names(label_path, all_img_names, img_name_to_label):
             img_name_to_label[oneline[0]] = int(oneline[1]) - 1
 
 
-def get_m2_random_imgs(m2, tag, transform, imgs_sampled, img_dir, label_path):
+def get_m2_random_imgs_for_one(m2, tag, transform, img_dir, label_path):
     all_img_names = []
     img_name_to_label = {}
     load_img_names(label_path, all_img_names, img_name_to_label)
     names = []
     get_m2_random_img_name(m2, tag, all_img_names, img_name_to_label, names)
+    imgs = []
     for onename in names:
         img_path = os.path.join(img_dir, onename)
         img = Image.open(img_path)
-        img = torch.unsqueeze(transform(img.convert('RGB')), 0)
-        imgs_sampled.append(img)
+        img = transform(img.convert('RGB'))
+        imgs.append(img)
+    return torch.stack(imgs, 0)
+
+
+def get_m2_random_imgs(m2, tag, transform, img_dir, label_path):
+    imgs = []
+    for i in range(len(tag)):
+        imgs.append(get_m2_random_imgs_for_one(m2, tag[i].item(), transform, img_dir, label_path))
+    return torch.stack(imgs, 1)
 
 
 # DI_Admix has already combined with DIM and Admix
@@ -62,12 +71,12 @@ def di_admix(model, x, y, transform, img_dir, label_path,  eps=32./255, mu=1.0, 
     adv = x.detach().clone().requires_grad_(True)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     g_sum = torch.zeros(adv.data.shape, dtype=torch.float).to(device)
-    imgs_sampled = []
     # enter loop to generate adv
     for i in range(T):
-        get_m2_random_imgs(m2, y.item(), transform, imgs_sampled, img_dir, label_path)
-        for img in imgs_sampled:
-            img = img.to(device) * 2 - 1.
+        # the shape of imgs_sampled is [m2, batch_size, channels, H, W)
+        imgs_sampled = get_m2_random_imgs(m2, y, transform, img_dir, label_path)
+        for k in range(m2):
+            img = imgs_sampled[k].to(device) * 2 - 1.
             for j in range(m1):
                 gamma = 1 / (2**j)
                 loss = lossfn(model(transform_with_p(gamma * (adv + eta * img), 0.5)), y)
@@ -80,5 +89,4 @@ def di_admix(model, x, y, transform, img_dir, label_path,  eps=32./255, mu=1.0, 
         momentum = mu * momentum + g_ave / torch.norm(g_ave, p=1)
         adv.data = adv.data + alpha * torch.sign(momentum)
         adv.data = torch.clamp(adv.data, clip_min, clip_max)
-        imgs_sampled.clear()
     return adv.detach(), 0
