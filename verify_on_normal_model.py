@@ -5,7 +5,7 @@ import pretrainedmodels
 from utils.CustomDataset import CustomDataset2
 
 
-def verify(source_model):
+def verify(source_model, batchsize):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     target_models = {}
@@ -14,7 +14,7 @@ def verify(source_model):
     model_incres_v2 = pretrainedmodels.__dict__["inceptionresnetv2"](num_classes=1000, pretrained='imagenet')
     model_res_101 = pretrainedmodels.__dict__["resnet152"](num_classes=1000, pretrained='imagenet')
     model_res_152 = pretrainedmodels.__dict__["resnet101"](num_classes=1000, pretrained='imagenet')
-    model_vgg_19 =  pretrainedmodels.__dict__["vgg19"](num_classes=1000, pretrained='imagenet')
+    model_vgg_19 = pretrainedmodels.__dict__["vgg19"](num_classes=1000, pretrained='imagenet')
     model_inc_v3.to(device)
     model_inc_v4.to(device)
     model_incres_v2.to(device)
@@ -45,21 +45,20 @@ def verify(source_model):
         sm_label_dir = "storage/label/" + source_model + "_right_label.txt"
         tm_label_dir = "storage/label/" + target_model_name + "_right_label.txt"
         dataset = CustomDataset2(adv_dir, sm_label_dir, tm_label_dir, transform)
-        dataloader = DataLoader(dataset)
+        dataloader = DataLoader(dataset, batchsize)
 
         count = 0
         count_sceucess = 0
 
         for img, tag, name in dataloader:
-            count = count + 1
+            count = count + len(tag)
             img = img.to(device) * 2 - 1.
             tag = tag.to(device)
             target_model.eval()
 
             with torch.no_grad():
-                pred = target_model(img)[0].argmax(0).item()
-            if pred != tag.item():
-                count_sceucess = count_sceucess + 1
+                pred = target_model(img).argmax(1)
+            count_sceucess = count_sceucess + sum(tag != pred).item()
             print("\r", "[Source model:[{}] || Target model:[{}] || No.{}, Success:{}, SR:{}"
                   .format(source_model, target_model_name, count, count_sceucess, round(count_sceucess / count, 4)),
                   end="",
@@ -69,4 +68,5 @@ def verify(source_model):
 
 if __name__ == "__main__":
     source_model = "inc_v3"
-    verify(source_model)
+    batchsize = 50
+    verify(source_model, batchsize)
