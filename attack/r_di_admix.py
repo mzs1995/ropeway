@@ -82,7 +82,7 @@ def get_m2_random_imgs(m2, tag, transform, img_dir, label_path):
     return torch.stack(imgs, 1)
 
 
-def re_di_admix(model, x, y, transform, img_dir, label_path, eps=32./255, mu=1.0, T=10,
+def r_di_admix(model, x, y, transform, img_dir, label_path, eps=32./255, mu=1.0, T=10,
                 m1=5, m2=3, eta=0.2, N=10, clip_min=-1.0, clip_max=1.0):
     # initialize
     lossfn = torch.nn.CrossEntropyLoss()
