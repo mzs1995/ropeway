@@ -29,7 +29,7 @@ def ropeway_dim(model, lossfn, x, y, grad_te, alpha, p, N):
     return grad_te
 
 
-def re_dim(model, x, y, eps=32./255, T=10, p=0.5, mu=1.0, N=10, clip_min=-1.0, clip_max=1.0):
+def r_dim(model, x, y, eps=32./255, T=10, p=0.5, mu=1.0, N=10, clip_min=-1.0, clip_max=1.0):
     # initialize
     lossfn = torch.nn.CrossEntropyLoss()
     alpha = eps / T
