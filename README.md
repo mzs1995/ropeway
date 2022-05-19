@@ -34,7 +34,7 @@ Generate adversarial examples:
 python generate_adv_example.py
 ```
 - Before generating adversarial examples, you should empty `/storage/adv`.
-- The default attack is R-DIM. If you want test other attacks, you can modify lines 95-102 in `generate_adv_example.py`.
+- The default attack is R-DIM. If you want test other attacks, you can modify lines 93-100 in `generate_adv_example.py`.
 - The default source model is Inception-v3. If you want test other models, you can choose the model you want and modify lines 35-36 in `generate_adv_example.py`. And, don't forget to change `transform`.
 - The adversarial examples will be stored in `/storage/adv`.
 
@@ -45,7 +45,7 @@ python verify_on_normal_model.py
 ```
 - Before running, you should make sure that `/storage/adv` is not empty and label file in `/storage/label` is ready.
 - There are 6 normally trained models as default.
-- If the source model is not Inception-v3, please modify line 71 in `verify_on_normal_model.py` with the model you want and corresponding `transform`. And don't forget to confirm the label file in `/storage/label`.
+- If the source model is not Inception-v3, please modify line 70 in `verify_on_normal_model.py` with the model you want and corresponding `transform`. And don't forget to confirm the label file in `/storage/label`.
 
 ## Other tips
 
