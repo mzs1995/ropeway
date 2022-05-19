@@ -15,7 +15,7 @@ def ropeway_sim(model, lossfn, x, y, g_te, g_agg_sim, alpha, nums, N):
     return g_te
 
 
-def re_sim(model, x, y, eps=32./255, mu=1., T=10, nums=5, N=10, clip_min=-1., clip_max=1.):
+def r_sim(model, x, y, eps=32./255, mu=1., T=10, nums=5, N=10, clip_min=-1., clip_max=1.):
     # initialize
     lossfn = torch.nn.CrossEntropyLoss()
     alpha = eps / T
