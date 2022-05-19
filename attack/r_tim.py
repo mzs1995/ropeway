@@ -13,7 +13,7 @@ def ropeway_tim(model, lossfn, x, y, kernel, g_te, alpha, N):
     return g_te
 
 
-def re_tim(model, x, y, kernel, eps=(32./255), mu=1.0, T=10, N=10, clip_min=-1.0, clip_max=1.0):
+def r_tim(model, x, y, kernel, eps=(32./255), mu=1.0, T=10, N=10, clip_min=-1.0, clip_max=1.0):
     # initialize
     lossfn = torch.nn.CrossEntropyLoss()
     alpha = eps / T
