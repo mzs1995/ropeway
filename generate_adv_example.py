@@ -41,8 +41,6 @@ def generate(attack, batchsize, storage_adv_dir, img_dir, label_path):
         transforms.ToTensor(),
     ])
 
-    if attack.__contains__("DI-Admix"):
-        batchsize = 1
     dataset = CustomDataset1(img_dir, label_path, transform)
     dataloader = DataLoader(dataset, batch_size=batchsize)
 
@@ -55,7 +53,7 @@ def generate(attack, batchsize, storage_adv_dir, img_dir, label_path):
     for img, tag, name in dataloader:
 
         torch.manual_seed(0)
-        count = count + batchsize
+        count = count + len(tag)
         img = img.to(device) * 2 - 1.
         tag = tag.to(device)
         source_model.eval()
@@ -81,7 +79,7 @@ def generate(attack, batchsize, storage_adv_dir, img_dir, label_path):
             print("Attack name is wrong.")
             break
 
-        for j in range(batchsize):
+        for j in range(len(img_adv)):
             imgs_rgb = TensorToImg(img_adv[j], to_pil_img)
             path = os.path.join(storage_adv_dir, name[j])
             imgs_rgb.save(path)
