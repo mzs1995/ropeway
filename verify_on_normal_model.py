@@ -58,9 +58,9 @@ def verify(source_model, batchsize):
 
             with torch.no_grad():
                 pred = target_model(img).argmax(1)
-            count_sceucess = count_success + sum(tag != pred).item()
+            count_success = count_success + sum(tag != pred).item()
             print("\r", "[Source model:[{}] || Target model:[{}] || No.{}, Success:{}, SR:{}"
-                  .format(source_model, target_model_name, count, count_sceucess, round(count_sceucess / count, 4)),
+                  .format(source_model, target_model_name, count, count_success, round(count_success / count, 4)),
                   end="",
                   flush=True)
         print("\n")
