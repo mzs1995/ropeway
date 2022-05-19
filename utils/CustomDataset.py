@@ -34,11 +34,11 @@ class CustomDataset1(Dataset):
 
 
 class CustomDataset2(Dataset):
-    def __init__(self, adv_dir, sm_label_dir, tm_label_dir, transform=None):
+    def __init__(self, adv_dir, sm_label_path, tm_label_path, transform=None):
         self.adv_dir = adv_dir
         self.all_img_names = []
         self.img_name_to_label = {}
-        self.load_name_and_label(sm_label_dir, tm_label_dir)
+        self.load_name_and_label(sm_label_path, tm_label_path)
         self.transform = transform
 
     def __getitem__(self, idx):
@@ -51,12 +51,12 @@ class CustomDataset2(Dataset):
     def __len__(self):
         return len(self.all_img_names)
 
-    def load_name_and_label(self, sm_label_dir, tm_label_dir):
+    def load_name_and_label(self, sm_label_path, tm_label_path):
         sm_all_img_names = []
         tm_all_img_names = []
         sm_img_name_to_label = {}
 
-        with open(sm_label_dir, "r") as f:
+        with open(sm_label_path, "r") as f:
             allLine = f.readlines()
             for one in allLine:
                 img_name = one.split(" ")[0]
@@ -64,7 +64,7 @@ class CustomDataset2(Dataset):
                 sm_all_img_names.append(img_name)
                 sm_img_name_to_label[img_name] = int(label)
 
-        with open(tm_label_dir, "r") as f:
+        with open(tm_label_path, "r") as f:
             allLine = f.readlines()
             for one in allLine:
                 img_name = one.split(" ")[0]
