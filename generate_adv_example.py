@@ -1,4 +1,5 @@
 import os.path
+import argparse
 import torch
 from torch.utils.data import DataLoader
 from torchvision import transforms
@@ -89,16 +90,16 @@ def generate(attack, batchsize, storage_adv_dir, img_dir, label_path):
     print("\n")
 
 
+def parse_args():
+    parser = argparse.ArgumentParser(description="Generate adversarial examples")
+    parser.add_argument("--attack", default="R-DIM", type=str, help="Attack name")
+    return parser.parse_args()
+
+
 if __name__ == "__main__":
-    # attack = "DIM"
-    attack = "R-DIM"
-    # attack = "SIM"
-    # attack = "R-SIM"
-    # attack = "TIM"
-    # attack = "R-TIM"
-    # attack = "DI-Admix"
-    # attack = "R-DI-Admix"
-    batchsize = 50
+    args = parse_args()
+    attack = args.attack
+    batchsize = 20
     storage_adv_dir = "storage/adv"
     img_dir = "storage/imgs"
     label_path = "storage/label/sim_dataset.csv"
