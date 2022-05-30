@@ -34,7 +34,7 @@ Generate adversarial examples:
 python generate_adv_example.py
 ```
 - Before generating adversarial examples, you should empty `/storage/adv`.
-- The default attack is R-DIM.
+- The default attack is R-DIM. You can change attack with `python generate_adv_example.py --attack=XXX` (All attacks are `DIM`,`R-DIM`,`SIM`,`R-SIM`,`TIM`,`R-TIM`,`DI-Admix`,`R-DI-Admix`).
 - The default source model is Inception-v3.
 - The adversarial examples will be stored in `/storage/adv`.
 
