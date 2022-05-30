@@ -68,5 +68,5 @@ def verify(source_model, batchsize):
 
 if __name__ == "__main__":
     source_model = "inc_v3"
-    batchsize = 50
+    batchsize = 20
     verify(source_model, batchsize)
